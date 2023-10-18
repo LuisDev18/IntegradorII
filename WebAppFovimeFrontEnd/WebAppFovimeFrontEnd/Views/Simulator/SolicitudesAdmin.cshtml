@@ -1,0 +1,93 @@
+﻿
+<dialog id="modal-status" class="col-3 custom-block bg-white shadow-lg col-lg-3 col-md-3 col-3 border-0" style="height:290px;position:relative">
+    <button onclick="CerrarModalEstatus()" title="Cerrar" class="btn btn-primary badge bg-design rounded-pill ms-auto" style="position:absolute;right:0;top:10px;margin-right:20px">X</button>
+    <div>        
+        <label class="pt-2 pb-1 fw-bold">Estado:</label>
+        <select id="selectEstado" class="form-control">
+            <option value="1">Aprobado</option>
+            <option value="2">Pendiente</option>
+            <option value="3">Rechazado</option>
+        </select>
+        <label class="pt-2 pb-1 fw-bold">Comentarios:</label>
+        <textarea class="form-control" id="txtComentarios" name="txtComentarios" placeholder="Escriba algún comentario..."></textarea>
+        <button onclick="UpdateSolicitudEstado()" class="btn btn-success form-control mt-3">Guardar cambios</button>
+
+    </div>
+</dialog>
+
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-8 col-12  mx-auto w-100">
+
+                <div class="custom-block custom-block-topics-listing bg-white shadow-lg mb-2" style="max-height:420px !important;overflow-y: scroll;font-size:12px">
+                    <h6 class="border m-0 p-2 bg-light ">Solicitudes de crédito</h6>
+                    <div class="p-2 border">
+
+                        <table id="tb_solicitudes" class="display w-100">
+                            <thead>
+                                <tr>
+                                    <th>Cod CIP</th>
+                                    <th>Socio</th>
+                                    <th>Grado</th>
+                                    <th>F.Nac</th>
+                                    <th>Fecha solicitud</th>
+                                    <th>Plazo deseado</th>
+                                    <th>N. Cuotas</th>
+                                    <th>Monto solicitado</th>
+                                    <th>Estado</th>
+                                    <th style="min-width:60px"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+                <div id="panel_solicitudes_detalle" class="custom-block custom-block-topics-listing bg-white shadow-lg mb-2" style="display:none;max-height:420px !important;overflow-y: scroll;font-size:12px">
+                    <h6 class="border m-0 p-2 bg-light " style="font-size:17px;font-weight:bold">Detalle de la solicitud</h6>
+                    <div class="p-2 border">
+
+                        <table id="tb_solicitudes_detalle" class="display w-100">
+                            <thead>
+                                <tr>
+                                    <th>N. cuota</th>
+                                    <th>F. vencimiento</th>
+                                    <th>Saldo inicial</th>
+                                    <th>Capital</th>
+                                    <th>Interes</th>
+                                    <th>Seguro</th>
+                                    <th>Comisión</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts{
+    <script src="~/js/solicitudAdmin.js"></script>
+}
