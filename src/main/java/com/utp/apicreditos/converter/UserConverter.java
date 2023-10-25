@@ -1,5 +1,6 @@
 package com.utp.apicreditos.converter;
 
+import com.utp.apicreditos.dto.UserProfileResponseDto;
 import com.utp.apicreditos.dto.UserResponseDto;
 import com.utp.apicreditos.entity.Role;
 import com.utp.apicreditos.entity.User;
@@ -29,6 +30,21 @@ public class UserConverter extends AbstractConverter<User, UserResponseDto>{
             return User.builder()
                     .ctCip(dto.getUsernameCIP())
                     .role(rol)
+                    .build();
+        }
+    }
+
+    public UserProfileResponseDto fromEntityToUserProfile (User user){
+        if(user == null) {
+            return null;
+        } else {
+            return UserProfileResponseDto.builder()
+                    .infoUser(user.getCtCliente())
+                    .address(user.getCtDireccion())
+                    .email(user.getCtEmail())
+                    .degree(user.getCtGrado())
+                    .cellphone(user.getCtTelefono())
+                    .birthDate(user.getDNacimiento())
                     .build();
         }
     }

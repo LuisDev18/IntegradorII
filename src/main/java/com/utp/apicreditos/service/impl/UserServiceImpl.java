@@ -3,18 +3,20 @@ package com.utp.apicreditos.service.impl;
 import com.utp.apicreditos.converter.UserConverter;
 import com.utp.apicreditos.dto.LoginRequestDto;
 import com.utp.apicreditos.dto.LoginResponseDto;
+import com.utp.apicreditos.dto.UserProfileResponseDto;
 import com.utp.apicreditos.dto.UserUpdateRequestDto;
 import com.utp.apicreditos.entity.User;
-import com.utp.apicreditos.exception.ValidateServiceException;
+import com.utp.apicreditos.exception.InvalidCredentialsException;
+import com.utp.apicreditos.exception.MessageException;
 import com.utp.apicreditos.repository.UserRepository;
 import com.utp.apicreditos.security.JwtService;
 import com.utp.apicreditos.service.UserService;
-import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -44,34 +46,44 @@ public class UserServiceImpl implements UserService {
             var usuario = usuarioRepository.findByCtCip(loginRequestDto.getUsernameCIP()).orElseThrow();
             var jwtToken = jwtService.generateToken(usuario);
             return new LoginResponseDto(usuarioConverter.fromEntity(usuario), jwtToken);
-        } catch (JwtException e) {
+        } catch (AuthenticationException e) {
             log.info(e.getMessage(), e);
-            throw new ValidateServiceException(e.getMessage());
-        } catch (Exception e) {
-            log.info(e.getMessage(), e);
-            throw new ValidateServiceException(e.getMessage());
+            throw new InvalidCredentialsException(MessageException.INVALID_CREDENTIALS);
         }
     }
 
     @Override
     public void updateUser(UserUpdateRequestDto userUpdateRequestDto) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
-            // Obtener el UserDetails desde la autenticación
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
-            // Obtener el campo "username" del token
-            String username = userDetails.getUsername();
-
-            Optional<User> userDb = usuarioRepository.findByCtCip(username);
-            if (userDb.isPresent()) {
-                User user = userDb.get();
-                user.setCtEmail(userUpdateRequestDto.getEmail());
-                user.setCtTelefono(userUpdateRequestDto.getCellphone());
-                user.setCtDireccion(userUpdateRequestDto.getAddress());
-                usuarioRepository.save(user);
-            }
-
+        Optional<User> userDb = usuarioRepository.findByCtCip(getAuthenticatedUser());
+        if (userDb.isPresent()) {
+            User user = userDb.get();
+            user.setCtEmail(userUpdateRequestDto.getEmail());
+            user.setCtTelefono(userUpdateRequestDto.getCellphone());
+            user.setCtDireccion(userUpdateRequestDto.getAddress());
+            usuarioRepository.save(user);
         }
     }
+
+
+    @Override
+    public UserProfileResponseDto getProfileUser() {
+        Optional<User> userDb = usuarioRepository.findByCtCip(getAuthenticatedUser());
+        if (userDb.isPresent()) {
+            User user = userDb.get();
+            return usuarioConverter.fromEntityToUserProfile(user);
+        }
+        throw new RuntimeException(MessageException.PROFILE_NOT_FOUND);
+    }
+
+
+    private String getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails userDetails) {
+            return userDetails.getUsername();
+        }
+        throw new RuntimeException(MessageException.USER_AUTHENTICATED_NOT_FOUND);
+    }
+
+
 }

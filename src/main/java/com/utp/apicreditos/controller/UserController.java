@@ -2,6 +2,7 @@ package com.utp.apicreditos.controller;
 
 import com.utp.apicreditos.dto.LoginRequestDto;
 import com.utp.apicreditos.dto.LoginResponseDto;
+import com.utp.apicreditos.dto.UserProfileResponseDto;
 import com.utp.apicreditos.dto.UserUpdateRequestDto;
 import com.utp.apicreditos.service.UserService;
 import com.utp.apicreditos.util.WrapperResponse;
@@ -23,22 +24,24 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping(value = "/usuarios/login")
+    @PostMapping(value = "/user/login")
     public ResponseEntity<WrapperResponse<LoginResponseDto>> login(
-            @RequestBody LoginRequestDto request) {
+          @Valid  @RequestBody LoginRequestDto request) {
         LoginResponseDto response = userService.login(request);
         return new WrapperResponse<>(true, "success", response).createResponse(HttpStatus.OK);
     }
 
-    @GetMapping(value = "/hello")
-    public ResponseEntity<WrapperResponse<String>> hello() {
-        return new WrapperResponse<>(true, "success", "Hello World").createResponse(HttpStatus.OK);
-    }
 
-    @PutMapping(value = "/profile")
+    @PutMapping(value = "/user/update-profile", consumes = "application/json", produces = "application/json")
     public ResponseEntity<WrapperResponse<String>>updateProfile(@Valid @RequestBody UserUpdateRequestDto user){
         userService.updateUser(user);
         return new WrapperResponse<>(true,"User was update success","Profile update").createResponse(HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/user/profile",produces = "application/json")
+    public ResponseEntity<WrapperResponse<UserProfileResponseDto>> getProfile(){
+        UserProfileResponseDto response = userService.getProfileUser();
+        return new WrapperResponse<>(true,"success",response).createResponse(HttpStatus.OK);
     }
 
 
