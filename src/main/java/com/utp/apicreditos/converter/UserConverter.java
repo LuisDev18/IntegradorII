@@ -14,8 +14,7 @@ public class UserConverter extends AbstractConverter<User, UserResponseDto>{
             return null;
         } else {
             return UserResponseDto.builder()
-                    .id(entity.getId())
-                    .usernameCIP(entity.getUsernameCIP())
+                    .usernameCIP(entity.getCtCip())
                     .role(entity.getRole().name())
                     .build();
         }
@@ -28,8 +27,7 @@ public class UserConverter extends AbstractConverter<User, UserResponseDto>{
         } else {
             Role rol = Role.valueOf(dto.getRole().toUpperCase());
             return User.builder()
-                    .id(dto.getId())
-                    .usernameCIP(dto.getUsernameCIP())
+                    .ctCip(dto.getUsernameCIP())
                     .role(rol)
                     .build();
         }

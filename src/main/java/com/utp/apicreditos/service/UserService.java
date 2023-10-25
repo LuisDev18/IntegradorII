@@ -2,9 +2,12 @@ package com.utp.apicreditos.service;
 
 import com.utp.apicreditos.dto.LoginRequestDto;
 import com.utp.apicreditos.dto.LoginResponseDto;
+import com.utp.apicreditos.dto.UserUpdateRequestDto;
+import com.utp.apicreditos.entity.User;
 
 public interface UserService {
 
-    public LoginResponseDto login(LoginRequestDto loginRequestDto);
+    LoginResponseDto login(LoginRequestDto loginRequestDto);
+    void updateUser(UserUpdateRequestDto userUpdateRequestDto);
 
 }

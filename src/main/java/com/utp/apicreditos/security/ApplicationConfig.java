@@ -23,7 +23,7 @@ public class ApplicationConfig {
     public UserDetailsService userDetailsService() {
         return usernameCIP ->
                 userRepository
-                        .findByUsernameCIP(usernameCIP)
+                        .findByCtCip(usernameCIP)
                         .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 

@@ -1,5 +1,6 @@
 package com.utp.apicreditos.security;
 
+import com.utp.apicreditos.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -48,6 +49,7 @@ public class JwtService {
         Claims claims = Jwts.claims();
         claims.put("username", userDetails.getUsername());
         claims.put("roles", userDetails.getAuthorities().toString());
+        claims.put("NombreCompleto",((User)userDetails).getCtCliente());
         claims.putAll(extraClaims); // Agregar campos adicionales
 
         return Jwts.builder()

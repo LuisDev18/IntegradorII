@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 public class UserResponseDto {
-    private Long id;
-    private String usernameCIP;
+
+    private Long usernameCIP;
     private String role;
 }
