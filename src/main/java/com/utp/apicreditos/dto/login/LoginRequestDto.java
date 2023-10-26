@@ -1,4 +1,4 @@
-package com.utp.apicreditos.dto;
+package com.utp.apicreditos.dto.login;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

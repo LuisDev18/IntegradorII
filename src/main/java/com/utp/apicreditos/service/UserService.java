@@ -1,10 +1,9 @@
 package com.utp.apicreditos.service;
 
-import com.utp.apicreditos.dto.LoginRequestDto;
-import com.utp.apicreditos.dto.LoginResponseDto;
-import com.utp.apicreditos.dto.UserProfileResponseDto;
-import com.utp.apicreditos.dto.UserUpdateRequestDto;
-import com.utp.apicreditos.entity.User;
+import com.utp.apicreditos.dto.login.LoginRequestDto;
+import com.utp.apicreditos.dto.login.LoginResponseDto;
+import com.utp.apicreditos.dto.user.UserProfileResponseDto;
+import com.utp.apicreditos.dto.user.UserUpdateRequestDto;
 
 public interface UserService {
 

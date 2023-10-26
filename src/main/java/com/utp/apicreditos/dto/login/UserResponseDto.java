@@ -1,4 +1,4 @@
-package com.utp.apicreditos.dto;
+package com.utp.apicreditos.dto.login;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

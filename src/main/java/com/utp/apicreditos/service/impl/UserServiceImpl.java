@@ -1,24 +1,22 @@
 package com.utp.apicreditos.service.impl;
 
 import com.utp.apicreditos.converter.UserConverter;
-import com.utp.apicreditos.dto.LoginRequestDto;
-import com.utp.apicreditos.dto.LoginResponseDto;
-import com.utp.apicreditos.dto.UserProfileResponseDto;
-import com.utp.apicreditos.dto.UserUpdateRequestDto;
+import com.utp.apicreditos.dto.login.LoginRequestDto;
+import com.utp.apicreditos.dto.login.LoginResponseDto;
+import com.utp.apicreditos.dto.user.UserProfileResponseDto;
+import com.utp.apicreditos.dto.user.UserUpdateRequestDto;
 import com.utp.apicreditos.entity.User;
 import com.utp.apicreditos.exception.InvalidCredentialsException;
 import com.utp.apicreditos.exception.MessageException;
 import com.utp.apicreditos.repository.UserRepository;
 import com.utp.apicreditos.security.JwtService;
 import com.utp.apicreditos.service.UserService;
+import com.utp.apicreditos.util.AuthenticateHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -54,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(UserUpdateRequestDto userUpdateRequestDto) {
-        Optional<User> userDb = usuarioRepository.findByCtCip(getAuthenticatedUser());
+        Optional<User> userDb = usuarioRepository.findByCtCip(AuthenticateHelper.getAuthenticateUser());
         if (userDb.isPresent()) {
             User user = userDb.get();
             user.setCtEmail(userUpdateRequestDto.getEmail());
@@ -67,22 +65,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserProfileResponseDto getProfileUser() {
-        Optional<User> userDb = usuarioRepository.findByCtCip(getAuthenticatedUser());
+        Optional<User> userDb = usuarioRepository.findByCtCip(AuthenticateHelper.getAuthenticateUser());
         if (userDb.isPresent()) {
             User user = userDb.get();
             return usuarioConverter.fromEntityToUserProfile(user);
         }
         throw new RuntimeException(MessageException.PROFILE_NOT_FOUND);
-    }
-
-
-    private String getAuthenticatedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication != null && authentication.getPrincipal() instanceof UserDetails userDetails) {
-            return userDetails.getUsername();
-        }
-        throw new RuntimeException(MessageException.USER_AUTHENTICATED_NOT_FOUND);
     }
 
 

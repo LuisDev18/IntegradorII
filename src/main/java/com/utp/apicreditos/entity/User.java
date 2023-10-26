@@ -1,6 +1,7 @@
 package com.utp.apicreditos.entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -56,6 +57,9 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "userCIP")
+    private List<Aportation> aportations;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -1,7 +1,7 @@
 package com.utp.apicreditos.converter;
 
-import com.utp.apicreditos.dto.UserProfileResponseDto;
-import com.utp.apicreditos.dto.UserResponseDto;
+import com.utp.apicreditos.dto.user.UserProfileResponseDto;
+import com.utp.apicreditos.dto.login.UserResponseDto;
 import com.utp.apicreditos.entity.Role;
 import com.utp.apicreditos.entity.User;
 import org.springframework.stereotype.Component;
