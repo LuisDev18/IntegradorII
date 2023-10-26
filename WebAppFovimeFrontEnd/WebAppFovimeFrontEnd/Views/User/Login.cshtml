@@ -1,0 +1,60 @@
+﻿@{
+	Layout = null;
+}
+<link href="~/css/login.css" rel="stylesheet" />	
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+
+<div class="limiter">
+
+	<div class="container-login100 backlogin" style="position:relative">
+		<div id="loader">
+			<div class="lds-roller" style="top: 50%;left: 50%;transform: translate(-50%, -50%);">
+				<div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+			</div>
+		</div>
+		<div class="wrap-login100">
+			<div class="login100-form validate-form">
+				<div class="login100-form-avatar">					
+                    <img src="~/img/logo-login.svg" />
+				</div>
+
+				<div class="alert-container">
+					<div class="alert alert-success alert" role="alert" style="background-color: #DCF8E9; border-color: #DCF8E9; color: #059D4C; font-size: 10px; text-align: center; font-family: 'Poppins'">
+						<span><i class="fa-solid fa-circle-info"></i></span>
+						<span><b>Sistema de Consultas de aportes y crédito de socios</b></span>
+					</div>
+				</div>
+
+				<div class="wrap-input100 validate-input m-b-10 mb-2">
+					<input class="input100" type="text" id="txtCIP" name="user" style="height: 55px; border-radius: 60px;" maxlength="100" placeholder="Ingresa tu CIP" value="" required>
+					<span class="focus-input100"></span>
+					<span class="symbol-input100"><i class="fa fa-user"></i></span>
+				</div>
+
+				<div class="wrap-input100 validate-input m-b-10 mb-2">
+					<input class="input100" type="password" id="txtPassword" name="password" style="height: 55px; border-radius: 60px;" maxlength="200" placeholder="Ingresa tu contraseña" required>
+
+					<span class="focus-input100"></span>
+					<span class="symbol-input100"><i class="fa fa-lock"></i></span>
+				</div>
+
+				<div class="container-login100-form-btn p-t-10">
+					<button id="validateAccess" class="login100-form-btn mb-5" style="height: 55px; border-radius: 60px;" onclick="ValidateAccess()">Acceder</button>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/login.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>    
