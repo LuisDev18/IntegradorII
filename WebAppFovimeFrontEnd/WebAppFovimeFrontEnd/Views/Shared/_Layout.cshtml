@@ -1,34 +1,68 @@
-﻿<!DOCTYPE html>
+﻿@using WebAppFovimeFrontEnd.Helpers;
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - WebAppFovimeFrontEnd</title>
+    <title>Fovime</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/WebAppFovimeFrontEnd.styles.css" asp-append-version="true" />
+    <link href="~/css/templatemo-topic-listing.css" rel="stylesheet" />
+
+    <!--Datatable-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css" />
+
 </head>
-<body>
+<body style="position:relative">
+    <div id="loader">
+        <div class="lds-roller" style="top: 50%;left: 50%;transform: translate(-50%, -50%);">
+            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+            </div>
+        
+    </div>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3" >
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WebAppFovimeFrontEnd</a>
+                <img style="height:30px" src="~/img/logo-header.svg" />
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img class="img-fluid me-3" src="~/img/logo-header.svg" alt="Icon" />
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+                        @{if (User.Identity.IsAuthenticated && UserLogin.GetRolUser(User) == "USER") //no es admin
+                            {
+                                <li class="nav-item" title="Consulta de aportes">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Aportacion" asp-action="ViewAportaciones"><img src="~/img/text-file.png" /> Aportaciones</a>
+                                </li>
+                                <li class="nav-item" title="Consulta de estados de cuenta">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Credito" asp-action="ViewCreditos"><img src="~/img/credit-card.png" /> Créditos</a>
+                                </li>
+                                <li class="nav-item" title="Simulación de Crédito">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Simulator" asp-action="ViewSimulator"><img src="~/img/calculator.png" /> Simulación</a>
+                                </li>
+                                <li class="nav-item" title="Actualizar Información Personal">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="ViewPersonalInfo"><img src="~/img/edit-user.png" /> Datos personales</a>
+                                </li>
+                            }
+                        }                        
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Simulator" asp-action="ViewCreditRequests"><img src="~/img/response.png" /> Solicitudes</a>
                         </li>
                     </ul>
                 </div>
+                <div class="px-2"><i class="fas fa-user-circle"></i><span class="pr-2"> @UserLogin.GetNameUser(User)</span></div>
+                <div class="px-2"><button class="btn btn-success" onclick="window.open('/User/CloseSession', '_self')">Cerrar sesión</button></div>
             </div>
         </nav>
+
     </header>
     <div class="container">
         <main role="main" class="pb-3">
@@ -36,14 +70,32 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
+    <footer class="border-top footer text-muted bg-white" style="position: fixed;bottom: 0;width: 100%;height: 40px;">
+        <div class="container p-2">
             &copy; 2023 - WebAppFovimeFrontEnd - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <!--<script src="https://code.jquery.com/jquery-3.7.0.js"></script>-->
+    <!--Datatable-->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script> 
+
+        
+    <script src="~/js/site.js" asp-append-version="true"></script>    
+    
+    <script>
+        rootUrl = '@Url.Content("~")'
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
