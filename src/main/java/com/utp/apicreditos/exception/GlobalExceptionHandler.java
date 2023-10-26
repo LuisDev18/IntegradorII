@@ -13,9 +13,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -32,26 +31,37 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<CustomErrorResponse> handleGlobalException(Exception exception,
+                                                              WebRequest webRequest){
+        CustomErrorResponse errorDetails= new CustomErrorResponse(
+                LocalDateTime.now(),
+                exception.getMessage(),
+                webRequest.getDescription(false),
+                "INTERNAL_SERVER_ERROR"
+        );
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(
-            MethodArgumentNotValidException ex,
-            HttpHeaders headers,
-            HttpStatusCode status,
-            WebRequest request) {
-
-        // almacenamos multiples mensajes de error en un objeto Map<E,T>
-        Map<String, String> errors = new HashMap<>();
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+                                                                  HttpHeaders headers,
+                                                                  HttpStatusCode status,
+                                                                  WebRequest request) {
+        List<ValidationFieldError> errors = new ArrayList<>();
         List<ObjectError> errorList = ex.getBindingResult().getAllErrors();
+        LocalDateTime timestamp = LocalDateTime.now();
+        String path = request.getDescription(false);
 
-        errorList.forEach(
-                (error) -> {
-                    String fieldName = ((FieldError) error).getField();
-                    String message = error.getDefaultMessage();
-                    errors.put(fieldName, message);
-                });
+        errorList.forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String message = error.getDefaultMessage();
+            String errorCode = "BAD_REQUEST";
+
+            ValidationFieldError fieldError = new ValidationFieldError(fieldName, message, timestamp, errorCode, path);
+            errors.add(fieldError);
+        });
 
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
-
 }
