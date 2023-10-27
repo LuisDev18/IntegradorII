@@ -19,6 +19,6 @@ public class LoginRequestDto {
     @Pattern(regexp = "^[0-9]*$", message = "El codigo CIP debe contener solo 9 dígitos")
     @NotBlank(message = "El codigo CIP es obligatorio")
     private String usernameCIP;
-    @NotBlank(message = "La contraseña es obligatoria")
+    @NotBlank(message = "La contraseña es obligatoria y no puede estar vacía")
     private String password;
 }
