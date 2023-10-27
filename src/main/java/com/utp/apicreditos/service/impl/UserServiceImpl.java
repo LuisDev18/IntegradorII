@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
     public LoginResponseDto login(LoginRequestDto loginRequestDto) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequestDto.getUsernameCIP(), loginRequestDto.getPassword()));
-            var usuario = usuarioRepository.findByCtCip(loginRequestDto.getUsernameCIP()).orElseThrow();
+            var usuario = usuarioRepository.findByCtCip(Long.valueOf(loginRequestDto.getUsernameCIP())).orElseThrow();
             var jwtToken = jwtService.generateToken(usuario);
             return new LoginResponseDto(usuarioConverter.fromEntity(usuario), jwtToken);
         } catch (AuthenticationException e) {
