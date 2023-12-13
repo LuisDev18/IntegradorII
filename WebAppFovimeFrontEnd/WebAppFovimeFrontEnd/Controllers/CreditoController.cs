@@ -26,7 +26,7 @@ namespace WebAppFovimeFrontEnd.Controllers
         [HttpGet]
         public JsonResult GetAllCredits()
         {
-            string url = "credito/getCreditosBy?cip="+UserLogin.GetIdUser(User);            
+            //string url = "credito/getCreditosBy?cip="+UserLogin.GetIdUser(User);            
             //var response = await _serviceApi.RequestGet(url, UserLogin.GetValueUser(User, "token"));
             //var resultado = JsonConvert.DeserializeObject<GroupsResponse>(response);
 

@@ -65,7 +65,7 @@ namespace WebAppFovimeFrontEnd.Controllers
                 return Json(response);
             }
         }
-        
+            
         [Authorize(Roles = "ADMIN")]
         [HttpGet]
         public JsonResult GetSolicitudEstado(int idSimulacion)
@@ -82,7 +82,7 @@ namespace WebAppFovimeFrontEnd.Controllers
 
         [Authorize(Roles = "ADMIN")]
         [HttpPost]
-        public JsonResult UpdateSolicitudEstado(double monto, int plazo)
+        public JsonResult UpdateSolicitudEstado(int idEstado, string comentarios)
         {
             string url = "simulator/updateEstadoSolicitud";
 
@@ -121,9 +121,9 @@ namespace WebAppFovimeFrontEnd.Controllers
 
             //Data dummy:
             List<Solicitud> solicitudes = new List<Solicitud>();
-            solicitudes.Add(new Solicitud { idSimulacion=1, c_t_cip="322278000", socio="HURTADO LARA SATURNINO", grado="TECNICO TERCERA", d_nacimiento=DateTime.Now.ToString("dd-MM-yyyy"), d_documento=DateTime.Now.ToString("dd-MM-yyyy"), n_i_plazo=180, n_n_cuota=240.5, n_n_monto=2520.22, idEstado=1 });
-            solicitudes.Add(new Solicitud { idSimulacion=2, c_t_cip="559665556", socio="JUAN RAMOS", grado="TECNICO SEGUNDA", d_nacimiento=DateTime.Now.ToString("dd-MM-yyyy"), d_documento=DateTime.Now.ToString("dd-MM-yyyy"), n_i_plazo=300, n_n_cuota=240.5, n_n_monto=12225, idEstado=2 });
-            solicitudes.Add(new Solicitud { idSimulacion=3, c_t_cip="222255663", socio="VILMA PEREZ", grado="CAPITAN", d_nacimiento=DateTime.Now.ToString("dd-MM-yyyy"), d_documento=DateTime.Now.ToString("dd-MM-yyyy"), n_i_plazo=200, n_n_cuota=240.5, n_n_monto=8000, idEstado=3 });
+            solicitudes.Add(new Solicitud { idSimulacion=1, c_t_cip="322278000", socio="HURTADO LARA SATURNINO", grado="TECNICO TERCERA", d_nacimiento=DateTime.Now.ToString("dd-MM-yyyy"), d_documento=DateTime.Now.ToString("dd-MM-yyyy"), n_i_plazo=180, n_n_cuota=240.5, n_n_monto=2520.22, idEstado=1,comentarios="Sin comentarios" });
+            solicitudes.Add(new Solicitud { idSimulacion=2, c_t_cip="559665556", socio="JUAN RAMOS", grado="TECNICO SEGUNDA", d_nacimiento=DateTime.Now.ToString("dd-MM-yyyy"), d_documento=DateTime.Now.ToString("dd-MM-yyyy"), n_i_plazo=300, n_n_cuota=240.5, n_n_monto=12225, idEstado=2, comentarios="Sin comentarios" });
+            solicitudes.Add(new Solicitud { idSimulacion=3, c_t_cip="222255663", socio="VILMA PEREZ", grado="CAPITAN", d_nacimiento=DateTime.Now.ToString("dd-MM-yyyy"), d_documento=DateTime.Now.ToString("dd-MM-yyyy"), n_i_plazo=200, n_n_cuota=240.5, n_n_monto=8000, idEstado=3, comentarios="Sin comentarios" });
 
             return Json(new { data = solicitudes });
         }
@@ -132,15 +132,15 @@ namespace WebAppFovimeFrontEnd.Controllers
         [HttpGet]
         public JsonResult GetSolicitudesBySocio()
         {
-            string url = "solicitud/getSolicitudesBySocio?cip=" + UserLogin.GetIdUser(User);
+            //string url = "solicitud/getSolicitudesBySocio?cip=" + UserLogin.GetIdUser(User);
             //var response = await _serviceApi.RequestGet(url, UserLogin.GetValueUser(User, "token"));
             //var resultado = JsonConvert.DeserializeObject<GroupsResponse>(response);
 
             //Data dummy:
             List<Solicitud> solicitudes = new List<Solicitud>();
-            solicitudes.Add(new Solicitud { idSimulacion=1, n_i_plazo=180, d_documento=DateTime.Now.ToString("dd-MM-yyyy"), n_n_cuota=240.5, n_n_monto=2520.22, idEstado=1 });
-            solicitudes.Add(new Solicitud { idSimulacion=10, n_i_plazo=200, d_documento=DateTime.Now.ToString("dd-MM-yyyy"), n_n_cuota=2522, n_n_monto=5000, idEstado=2 });
-            solicitudes.Add(new Solicitud { idSimulacion=20, n_i_plazo=300, d_documento=DateTime.Now.ToString("dd-MM-yyyy"), n_n_cuota=1000, n_n_monto=7000, idEstado=3 });
+            solicitudes.Add(new Solicitud { idSimulacion=1, n_i_plazo=180, d_documento=DateTime.Now.ToString("dd-MM-yyyy"), n_n_cuota=240.5, n_n_monto=2520.22, idEstado=1, comentarios="Sin comentarios" });
+            solicitudes.Add(new Solicitud { idSimulacion=10, n_i_plazo=200, d_documento=DateTime.Now.ToString("dd-MM-yyyy"), n_n_cuota=2522, n_n_monto=5000, idEstado=2, comentarios="Sin comentarios" });
+            solicitudes.Add(new Solicitud { idSimulacion=20, n_i_plazo=300, d_documento=DateTime.Now.ToString("dd-MM-yyyy"), n_n_cuota=1000, n_n_monto=7000, idEstado=3, comentarios="Sin comentarios" });
 
             return Json(new { data = solicitudes });
         }

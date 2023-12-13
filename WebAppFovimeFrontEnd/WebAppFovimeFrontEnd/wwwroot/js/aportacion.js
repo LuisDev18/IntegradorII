@@ -14,20 +14,20 @@ function GetAllAportaciones() {
             "datatype": "json"
         },
         "columns": [                        
-            { "data": "n_i_anhio"},
-            { "data": "n_n_aporte01"},
-            { "data": "n_n_aporte02" },
-            { "data": "n_n_aporte03" },
-            { "data": "n_n_aporte04" },
-            { "data": "n_n_aporte05" },
-            { "data": "n_n_aporte06" },
-            { "data": "n_n_aporte07" },
-            { "data": "n_n_aporte08" },
-            { "data": "n_n_aporte09" },
-            { "data": "n_n_aporte10" },
-            { "data": "n_n_aporte11" },
-            { "data": "n_n_aporte12" },
-            { "data": "n_n_total" },
+            { "data": "yearAportation"},
+            { "data": "firstMonthAportation"},
+            { "data": "secondMonthAportation" },
+            { "data": "thirdMonthAportation" },
+            { "data": "fourthMonthAportation" },
+            { "data": "fifthMonthAportation" },
+            { "data": "sixthMonthAportation" },
+            { "data": "seventhMonthAportation" },
+            { "data": "eighthMonthAportation" },
+            { "data": "ninthMonthAportation" },
+            { "data": "tenthMonthAportation" },
+            { "data": "eleventhMonthAportation" },
+            { "data": "twelfthMonthAportation" },
+            { "data": "total" },
         ],
         "language": {
             url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
@@ -39,9 +39,9 @@ function GetAllAportaciones() {
                 text: "<span title='Exportar a Excel'><img src='" + rootUrl +"/img/excel.png' /> Exportar Excel</span>",
                 filename: "Reporte de créditos",
                 title: "",                
-                exportOptions: {
+                /*exportOptions: {
                     columns:[0,1,2]
-                },
+                },*/
                 className: "btn-export-excel"
             },            
             {
@@ -49,18 +49,18 @@ function GetAllAportaciones() {
                 text: "<span title='Exportar a PDF'><img src='" + rootUrl + "/img/pdf.png' /> Exportar PDF</span>",
                 filename: "Reporte de créditos",
                 title: "Reporte detallado de créditos",
-                exportOptions: {
+                /*exportOptions: {
                     columns: [0, 1, 2]
-                },
+                },*/
                 className: "btn-export-pdf"
             },
             {
                 extend: "print",                
                 text: "<span title='Imprimir registros'><img src='" + rootUrl + "/img/printer.png' /> Imprimir</span>",
                 title: "Reporte detallado de créditos",
-                exportOptions: {
+                /*exportOptions: {
                     columns: [0, 1, 2]
-                },
+                },*/
                 className: "btn-print"
             },
             "pageLength"
