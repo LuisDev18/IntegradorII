@@ -21,6 +21,7 @@ function GetSolicitudesBySocio() {
             { "data": "n_i_plazo" },
             { "data": "n_n_cuota" },
             { "data": "n_n_monto" },
+            { "data": "comentarios" },
             {
                 "data": "idEstado",
                 "render": function (data) {

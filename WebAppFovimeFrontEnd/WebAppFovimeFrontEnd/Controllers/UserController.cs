@@ -28,36 +28,43 @@ namespace WebAppFovimeFrontEnd.Controllers
             userLogin.usernameCIP= user;
             userLogin.password= password;
 
-            string url = "usuarios/login";
+            string url = "user/login";
             string token = "";
             var response = await _serviceApi.RequestPost(url, userLogin, token);
 
-            var resultado = JsonConvert.DeserializeObject<UserLoginResponse>(response);
-
-            //UserInfo userInfo = new UserInfo { idUser=1, token="123456850", fullName="Miguel Taipe", rol="ADMIN" };
-            //UserLoginResponse resultado = new UserLoginResponse { status="ok", message="Usuario o contraseña incorrecta.", data=userInfo };
-
-            if (resultado.ok == true)
+            if (response.ok==true)
             {
+                var resultado = JsonConvert.DeserializeObject<UserLoginResponse>(response.body);
+
+                //traer los datos del usuario
+                url = "user/profile";
+                //var userinfo = await _serviceApi.RequestGet(url, token);
+
                 var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
-                identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, resultado.body.usuario.id.ToString()));
+                identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, resultado.body.usuario.usernameCIP));
                 identity.AddClaim(new Claim(ClaimTypes.Name, resultado.body.usuario.usernameCIP));
                 identity.AddClaim(new Claim(ClaimTypes.Role, resultado.body.usuario.role));
-				identity.AddClaim(new Claim("cip", resultado.body.usuario.usernameCIP));
-				identity.AddClaim(new Claim("token", resultado.body.token));
+                identity.AddClaim(new Claim("cip", resultado.body.usuario.usernameCIP));
+                identity.AddClaim(new Claim("token", resultado.body.token));
 
                 var principal = new ClaimsPrincipal(identity);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
                 new AuthenticationProperties { ExpiresUtc = DateTime.Now.AddHours(24), IsPersistent = false });
+                
+                return Json(new { ok = true, usernameCIP = resultado.body.usuario.usernameCIP });
             }
+            else {
 
-            return Json(resultado);
+                var resultado = JsonConvert.DeserializeObject<ErrorResponse>(response.body);
+                return Json(new { ok = false, data = resultado });
+            }
+            
         }
 
         [Authorize(Roles = "USER")]
         public IActionResult ViewPersonalInfo()
         {
-            string url = "client/getClientInfo?cip="+UserLogin.GetIdUser(User);
+            //string url = "client/getClientInfo?cip="+UserLogin.GetIdUser(User);
             //var response = await _serviceApi.RequestGet(url, UserLogin.GetValueUser(User, "token"));
             //var resultado = JsonConvert.DeserializeObject<ClientInfoResponse>(response);
 

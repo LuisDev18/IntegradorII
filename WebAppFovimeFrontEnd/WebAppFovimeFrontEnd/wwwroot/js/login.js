@@ -7,9 +7,12 @@ function ValidateAccess() {
 
     var user = document.getElementById('txtCIP').value;
     var password = document.getElementById('txtPassword').value;
-
-    if (user.length == 0 || password.length == 0) {
-        toastr.error("Debe ingresar el usuario y la contraseña!");
+    
+    if (password.length == 0) {
+        toastr.error("Debe ingresar la contraseña!");
+    }
+    else if (user.length < 1 || user.length > 9) {
+        toastr.error("El usuario debe tener entre 1 y 9 digitos");
     }
     else {
         document.getElementById("loader").style.display = "block";
@@ -27,15 +30,16 @@ function ValidateAccess() {
                 swal("Ocurrió un error inesperado", "No se pudo establecer la conexión.", "error");
             },
             success: function (response) {
+                debugger;
                 if (response.ok == true) {
-                    toastr.success("Bienvenido " + response.body.usuario.usernameCIP + "!");
+                    toastr.success("Bienvenido " + response.usernameCIP + "!");
                     setTimeout(function () {
                         window.open('/User/RedirectUser', "_self");
                     }, 2000);
 
                 }
                 else {
-                    swal("Acceso denegado", response.message, "error");
+                    swal("Acceso denegado", response.data.message, "error");
                     document.getElementById("loader").style.display = "none";
                 }
 
